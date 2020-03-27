@@ -18,7 +18,7 @@ jobs:
         image: microsoft/mssql-server-linux
         env:
           ACCEPT_EULA: Y
-          MSSQL_SA_PASSWORD: ${{secrets.SqlPassword}}
+          MSSQL_SA_PASSWORD: ${{secrets.SqlPassword}} 
         ports:
         - 1434:1433         
     steps:
