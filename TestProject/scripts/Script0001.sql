@@ -1,0 +1,4 @@
+CREATE TABLE TestTable ( 
+	 Id INT IDENTITY (1,1) PRIMARY KEY
+	,Content TEXT	
+);		
