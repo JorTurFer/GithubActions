@@ -1,0 +1,50 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+
+resources:
+  containers:
+    - container: sql
+      image: microsoft/mssql-server-linux
+      env:
+          ACCEPT_EULA: Y
+          MSSQL_SA_PASSWORD: P2ssw0rd!
+      ports:
+        - 1434:1433
+
+services:
+  sql-server : sql
+
+strategy:
+  matrix:
+    net31100: 
+      net-version: '3.1.100'
+    net31101: 
+      net-version: '3.1.101'
+    net31102: 
+      net-version: '3.1.102'
+    net31103: 
+      net-version: '3.1.103'
+    net31201: 
+      net-version: '3.1.201'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: sdk
+    version: $(net-version)
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '$(solution)'
+    arguments: '--configuration $(buildConfiguration)'  
